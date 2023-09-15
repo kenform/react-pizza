@@ -5,15 +5,13 @@
 	&__label {
 		display: flex;
 		align-items: center;
-
-		svg {
-			margin-right: 8px;
+		gap: 15px;
+		.sort__arrow {
+			transition: transform 0.3s;
+			&.active {
+				transform: rotate(180deg);
+			}
 		}
-
-		b {
-			margin-right: 8px;
-		}
-
 		span {
 			color: $orange;
 			border-bottom: 1px dashed $orange;
@@ -37,7 +35,6 @@
 			li {
 				padding: 12px 20px;
 				cursor: pointer;
-
 				&.active,
 				&:hover {
 					background: rgba(254, 95, 30, 0.05);

@@ -2,16 +2,23 @@
 
 .header {
 	border-bottom: 1px solid $gray-line;
-	padding: 40px 0;
-
+	padding: 40px 5px;
+	@media (max-width: 645px) {
+		padding: 20px 5px;
+	}
 	.container {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		@media (max-width: 645px) {
+			flex-direction: column;
+			gap: 20px;
+		}
 	}
 
 	&__logo {
 		display: flex;
+		align-items: center;
 
 		img {
 			margin-right: 15px;
@@ -23,10 +30,27 @@
 			letter-spacing: 1%;
 			text-transform: uppercase;
 			font-weight: 800;
+			@media (max-width: 645px) {
+				font-size: 18px;
+			}
 		}
 
 		p {
 			color: #7b7b7b;
+			@media (max-width: 645px) {
+				display: none;
+			}
+		}
+		@media (max-width: 645px) {
+			gap: 50px;
+		}
+	}
+	&__cart {
+		@media (max-width: 645px) {
+			width: 100%;
+			.button--cart {
+				justify-content: center;
+			}
 		}
 	}
 }
