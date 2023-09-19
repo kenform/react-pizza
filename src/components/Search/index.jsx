@@ -1,7 +1,37 @@
-import React from 'react';
+import React, { useRef, useCallback, useState } from 'react';
+import debounce from 'lodash.debounce';
+import { useDispatch } from 'react-redux';
+import { setSearchValue } from '../../redux/slices/filterSlice';
+
 import styles from './Search.module.scss';
 
-const Search = ({ searchValue, setSearchValue }) => {
+const Search = () => {
+	const dispatch = useDispatch();
+
+	// Этот локальный state отвечает за быстрое отображение данных в input
+	const [value, setValue] = useState('');
+
+	const inputRef = useRef();
+
+	const onClickClear = () => {
+		dispatch(setSearchValue(''));
+		setValue('');
+		inputRef.current.focus();
+	};
+
+	// todo useCallback получает ссылку на функцию и возвращает функцию в переменную testDebounce. Функция не пересоздается
+	const updateSearchValue = useCallback(
+		debounce((str) => {
+			dispatch(setSearchValue(str));
+		}, 300),
+		[],
+	);
+
+	const onChangeInput = (event) => {
+		setValue(event.target.value);
+		updateSearchValue(event.target.value);
+	};
+
 	return (
 		<div className={styles.root}>
 			<svg
@@ -14,14 +44,15 @@ const Search = ({ searchValue, setSearchValue }) => {
 				<path d='M464,428,339.92,303.9a160.48,160.48,0,0,0,30.72-94.58C370.64,120.37,298.27,48,209.32,48S48,120.37,48,209.32s72.37,161.32,161.32,161.32a160.48,160.48,0,0,0,94.58-30.72L428,464ZM209.32,319.69A110.38,110.38,0,1,1,319.69,209.32,110.5,110.5,0,0,1,209.32,319.69Z' />
 			</svg>
 			<input
-				value={searchValue}
-				onChange={(event) => setSearchValue(event.target.value)}
+				ref={inputRef}
+				value={value}
+				onChange={onChangeInput}
 				className={styles.input}
 				placeholder='Поиск пиццы...'
 			/>
-			{searchValue && (
+			{value && (
 				<svg
-					onClick={() => setSearchValue('')}
+					onClick={onClickClear}
 					className={styles.clearIcon}
 					version='1.1'
 					viewBox='0 0 24 24'

@@ -1,13 +1,14 @@
 .root {
 	position: relative;
-	left: -120px;
+	display: flex;
+	justify-content: end;
 	.clearIcon {
-		width: 18px;
-		height: 18px;
+		width: 25px;
+		height: 25px;
 		opacity: 0.3;
 		position: absolute;
 		right: 15px;
-		top: 15px;
+		top: 25%;
 		cursor: pointer;
 		@media (any-hover: hover) {
 			&:hover {
@@ -19,11 +20,14 @@
 .input {
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	padding: 12px 20px;
-	width: 400px;
+	width: 350px;
 	border-radius: 10px;
 	font-size: 16px;
 	padding-left: 42px;
 	transition: all 0.15s ease-in-out;
+	@media (max-width: 769px) {
+		width: 100%;
+	}
 	&:focus {
 		border: 1px solid rgba(0, 0, 0, 0.3);
 	}
