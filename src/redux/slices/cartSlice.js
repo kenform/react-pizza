@@ -25,7 +25,6 @@ export const cartSlice = createSlice({
 			}, 0);
 		},
 
-
 		deleteItem(state, action) {
 			const findItem = state.items.find((obj) => obj.id === action.payload);
 			findItem.count > 1 && findItem.count-- && state.totalCount--;

@@ -40,15 +40,18 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 25px;
-		min-width: 25px;
-		height: 40px;
+		width: 50px;
+		min-width: 50px;
+		height: 48px;
 		font-size: 35px;
-		font-weight: 800;
+		font-weight: 400;
 		transition: background 0.3s;
-		&._active {
-			background: #282828;
+		@media (any-hover: hover) {
+			&:hover {
+				background: #282828;
+			}
 		}
+
 	}
 	&--circle {
 		display: flex;

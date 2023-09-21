@@ -8,8 +8,7 @@ const initialState = {
 	},
 	searchValue: '',
 	currentPage: 1,
-	orderId: 0,
-	orderType:'asc',
+	orderType: 'asc',
 };
 export const filterSlice = createSlice({
 	name: 'filters',
@@ -28,10 +27,8 @@ export const filterSlice = createSlice({
 			state.currentPage = action.payload;
 		},
 
-		setOrderId(state, action) {
-			state.orderId = action.payload;
+		setOrderType(state, action) {
 			state.orderType = action.payload;
-			console.log(state.orderType);
 		},
 
 		setFilters(state, action) {
@@ -44,7 +41,7 @@ export const filterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setCategoryId, setSort, setSearchValue, setCurrentPage, setOrderId, setFilters } =
+export const { setCategoryId, setSort, setSearchValue, setCurrentPage, setOrderType, setFilters } =
 	filterSlice.actions;
 
 export default filterSlice.reducer;

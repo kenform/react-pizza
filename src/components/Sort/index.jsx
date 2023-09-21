@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSort, setOrderId } from '../../redux/slices/filterSlice';
+import { setSort, setOrderType } from '../../redux/slices/filterSlice';
 
 export const sortList = [
 	{ name: 'популярности', sortProperty: 'rating' },
@@ -8,14 +8,10 @@ export const sortList = [
 	{ name: 'алфавиту', sortProperty: 'title' },
 ];
 
-const orderList = [
-	{ id: 0, type: 'asc' },
-	{ id: 1, type: 'desc' },
-];
 
 const Sort = () => {
 	const dispatch = useDispatch();
-	const { sort, orderId,orderType } = useSelector((state) => state.filter);
+	const { sort, orderType } = useSelector((state) => state.filter);
 	const sortRef = useRef();
 	const [open, setOpen] = useState(false);
 
@@ -24,10 +20,8 @@ const Sort = () => {
 		setOpen(false);
 	};
 
-	const onChangeOrder = (id,type) => {
-	
-		dispatch(setOrderId(id,type));
-
+	const onChangeOrder = () => {
+		dispatch(setOrderType(orderType === 'asc' ? 'desc' : 'asc'));
 	};
 
 	useEffect(() => {
@@ -78,16 +72,9 @@ const Sort = () => {
 				)}
 			</div>
 			<div className='buttons__orderType'>
-				{orderList.map((obj, i) => (
-					<button
-						onClick={() => onChangeOrder(i,obj.type)}
-						key={obj.id}
-						className={`button button--setOrder ${orderId === i ? '_active' : ''}`}
-					>
-						
-						⮃
-					</button>
-				))}
+				<button onClick={onChangeOrder} className={`button button--setOrder`}>
+					⇅
+				</button>
 			</div>
 		</>
 	);

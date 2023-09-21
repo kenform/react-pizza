@@ -101,7 +101,7 @@ const Cart = () => {
 					<div className='cart__bottom-details'>
 						<span>
 							Всего пицц: <b>{totalCount} шт.</b>
-							{console.log(totalPrice)}
+				
 						</span>
 						<span>
 							Сумма заказа: <b>{totalPrice} ₽</b>
