@@ -8,10 +8,9 @@ const initialState = {
 	},
 	searchValue: '',
 	currentPage: 1,
-	orderType: '',
-	clickOrder: false,
+	orderId: 0,
+	orderType:'asc',
 };
-
 export const filterSlice = createSlice({
 	name: 'filters',
 	initialState,
@@ -29,13 +28,13 @@ export const filterSlice = createSlice({
 			state.currentPage = action.payload;
 		},
 
-		//TODO FIXME
-		setOrderType(state, action) {
+		setOrderId(state, action) {
+			state.orderId = action.payload;
 			state.orderType = action.payload;
-			state.clickOrder = !state.clickOrder;
+			console.log(state.orderType);
 		},
+
 		setFilters(state, action) {
-			state.clickOrder = action.payload.clickOrder;
 			state.orderType = action.payload.orderType;
 			state.sort = action.payload.sort;
 			state.currentPage = Number(action.payload.currentPage);
@@ -45,7 +44,7 @@ export const filterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setCategoryId, setSort, setSearchValue, setCurrentPage, setOrderType, setFilters } =
+export const { setCategoryId, setSort, setSearchValue, setCurrentPage, setOrderId, setFilters } =
 	filterSlice.actions;
 
 export default filterSlice.reducer;

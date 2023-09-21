@@ -4,12 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import qs from 'qs';
 
-import {
-	setCategoryId,
-	setCurrentPage,
-	setOrderType,
-	setFilters,
-} from '../redux/slices/filterSlice';
+import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
 
 import Sort, { sortList } from '../components/Sort';
 import Category from '../components/Category';
@@ -25,7 +20,7 @@ const Home = () => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	// TODO useSelector - функция, чтобы вытащить state.  Берем из filter -> filterSlice.js -> состояние (categoryId)
-	const { categoryId, sort, orderType, clickOrder, searchValue, currentPage } = useSelector(
+	const { categoryId, sort, orderType, searchValue, currentPage } = useSelector(
 		(state) => state.filter,
 	);
 
@@ -52,34 +47,25 @@ const Home = () => {
 		dispatch(setCategoryId(id));
 	};
 
-	const onChangeOrder = (type) => {
-		dispatch(setOrderType(type));
-	};
-
+	// Если изменили параметры и был 1 рендер то вшиваем строку в поиск из redux
 	useEffect(() => {
-		// Если изменили параметры и был 1 рендер то вшиваем строку в поиск из redux
 		if (isMounted.current) {
 			const queryString = qs.stringify({
 				sortProperty: sort.sortProperty,
 				categoryId,
 				currentPage,
 				orderType,
-				clickOrder,
 			});
 			navigate(`?${queryString}`);
 		}
 		isMounted.current = true;
-	}, [categoryId, sort.sortProperty, currentPage, orderType, clickOrder]);
+	}, [categoryId, sort.sortProperty, currentPage, orderType]);
 
 	// Если был первый рендер, то проверяем URL- параметры и сохраняем в redux
 	useEffect(() => {
 		if (window.location.search) {
 			const params = qs.parse(window.location.search.substring(1));
-			console.log(params, 'Я ИЗ PARAMS');
-
 			const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
-			console.log(sort, 'Я ИЗ sort');
-
 			dispatch(
 				setFilters({
 					...params,
@@ -90,11 +76,13 @@ const Home = () => {
 		}
 	}, []);
 
+	// Если был первый рендер, то запрашиваем пиццы
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		if (!isSearch.current) {
 			fetchPizzas();
 		}
+		isSearch.current = false;
 	}, [categoryId, sort.sortProperty, orderType, searchValue, currentPage]);
 
 	const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
@@ -105,23 +93,8 @@ const Home = () => {
 			<div className='content__top'>
 				<Category value={categoryId} onChangeCategory={onChangeCategory} />
 				<Sort />
-				<div className='buttons__orderType'>
-					<button
-						className={`button button--setOrder ${clickOrder ? '_active' : ''}`}
-						onClick={() => onChangeOrder('asc')}
-					>
-						↑
-					</button>
-					<button
-						className={`button button--setOrder ${!clickOrder ? '_active' : ''}`}
-						onClick={() => onChangeOrder('desc')}
-					>
-						↓
-					</button>
-				</div>
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
-
 			<div className='content__items'>
 				{/* create an array of 6 undefined and replace them with Skeleton, otherwise render the elements */}
 				{isLoading ? skeletons : pizzas}
