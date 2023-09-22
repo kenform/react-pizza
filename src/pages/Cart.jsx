@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearItems } from '../redux/slices/cartSlice';
 import CartItem from '../components/CartItem';
 import CartEmpty from '../components/CartEmpty';
+import { cartSelector } from '../redux/slices/cartSlice';
+
 const Cart = () => {
 	const dispatch = useDispatch();
-	const { totalPrice, totalCount, items } = useSelector((state) => state.cart);
+	const { totalPrice, totalCount, items } = useSelector(cartSelector);
 	const onClickClear = () => {
 		dispatch(clearItems());
 	};
@@ -101,7 +103,6 @@ const Cart = () => {
 					<div className='cart__bottom-details'>
 						<span>
 							Всего пицц: <b>{totalCount} шт.</b>
-				
 						</span>
 						<span>
 							Сумма заказа: <b>{totalPrice} ₽</b>

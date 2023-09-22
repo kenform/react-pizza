@@ -1,11 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import qs from 'qs';
 
-import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import {
+	filterSelector,
+	setCategoryId,
+	setCurrentPage,
+	setFilters,
+} from '../redux/slices/filterSlice';
+import { fetchPizzas, pizzaDataSelector } from '../redux/slices/pizzaSlice';
 
 import Sort, { sortList } from '../components/Sort';
 import Category from '../components/Category';
@@ -19,10 +24,9 @@ const Home = () => {
 	const isMounted = useRef(false);
 
 	// TODO useSelector - функция, чтобы вытащить state.  Берем из filter -> filterSlice.js -> состояние (categoryId)
-	const { items, status } = useSelector((state) => state.pizza);
-	const { categoryId, sort, orderType, searchValue, currentPage } = useSelector(
-		(state) => state.filter,
-	);
+
+	const { items, status } = useSelector(pizzaDataSelector);
+	const { categoryId, sort, orderType, searchValue, currentPage } = useSelector(filterSelector);
 
 	const onChangePage = (number) => {
 		dispatch(setCurrentPage(number));
@@ -87,7 +91,11 @@ const Home = () => {
 		isSearch.current = false;
 	}, [categoryId, sort.sortProperty, orderType, searchValue, currentPage]);
 
-	const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+	const pizzas = items.map((obj) => (
+		<Link key={obj.id} to={`/pizza/${obj.id}`}>
+			<PizzaBlock {...obj} />
+		</Link>
+	));
 	const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
 	return (
