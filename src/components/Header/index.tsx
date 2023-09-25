@@ -3,7 +3,11 @@ import { useSelector } from 'react-redux';
 import Search from '../Search';
 import { cartSelector } from '../../redux/slices/cartSlice';
 
-const Header = () => {
+type TypeHeaderProps = {
+	totalPrice: number;
+	totalCount: number;
+};
+const Header: React.FC<TypeHeaderProps> = () => {
 	const { totalPrice, totalCount } = useSelector(cartSelector);
 	const location = useLocation();
 

@@ -51,7 +51,6 @@
 				background: #282828;
 			}
 		}
-
 	}
 	&--circle {
 		display: flex;
@@ -66,10 +65,9 @@
 
 	&--black {
 		background-color: $black;
-
 		&:hover,
 		&:active {
-			background-color: lighten($color: $black, $amount: 10);
+			background-color: $orange;
 		}
 	}
 

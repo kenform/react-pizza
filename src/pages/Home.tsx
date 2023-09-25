@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import qs from 'qs';
@@ -17,7 +17,7 @@ import Category from '../components/Category';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
-const Home = () => {
+const Home: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const isSearch = useRef(false);
@@ -28,8 +28,8 @@ const Home = () => {
 	const { items, status } = useSelector(pizzaDataSelector);
 	const { categoryId, sort, orderType, searchValue, currentPage } = useSelector(filterSelector);
 
-	const onChangePage = (number) => {
-		dispatch(setCurrentPage(number));
+	const onChangePage = (page: number) => {
+		dispatch(setCurrentPage(page));
 	};
 
 	const getPizzas = async () => {
@@ -38,6 +38,8 @@ const Home = () => {
 		const sortType = sort.sortProperty;
 
 		dispatch(
+			//!FIXE THIS
+			// @ts-ignore
 			fetchPizzas({
 				category,
 				search,
@@ -49,8 +51,8 @@ const Home = () => {
 		window.scrollTo(0, 0);
 	};
 
-	const onChangeCategory = (id) => {
-		dispatch(setCategoryId(id));
+	const onChangeCategory = (index: number) => {
+		dispatch(setCategoryId(index));
 	};
 
 	// Если изменили параметры и был 1 рендер то вшиваем строку в поиск из redux
@@ -71,7 +73,7 @@ const Home = () => {
 	useEffect(() => {
 		if (window.location.search) {
 			const params = qs.parse(window.location.search.substring(1));
-			const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
+			const sort = sortList.find((obj:any) => obj.sortProperty === params.sortProperty);
 			dispatch(
 				setFilters({
 					...params,
@@ -91,11 +93,7 @@ const Home = () => {
 		isSearch.current = false;
 	}, [categoryId, sort.sortProperty, orderType, searchValue, currentPage]);
 
-	const pizzas = items.map((obj) => (
-		<Link key={obj.id} to={`/pizza/${obj.id}`}>
-			<PizzaBlock {...obj} />
-		</Link>
-	));
+	const pizzas = items.map((obj:any) => <PizzaBlock key={obj.id} {...obj} />);
 	const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
 	return (

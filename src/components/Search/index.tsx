@@ -5,29 +5,29 @@ import { setSearchValue } from '../../redux/slices/filterSlice';
 
 import styles from './Search.module.scss';
 
-const Search = () => {
+const Search:React.FC = () => {
 	const dispatch = useDispatch();
 
 	// Этот локальный state отвечает за быстрое отображение данных в input
 	const [value, setValue] = useState('');
 
-	const inputRef = useRef();
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const onClickClear = () => {
 		dispatch(setSearchValue(''));
 		setValue('');
-		inputRef.current.focus();
+		inputRef.current?.focus();
 	};
 
 	// todo useCallback получает ссылку на функцию и возвращает функцию в переменную testDebounce. Функция не пересоздается
 	const updateSearchValue = useCallback(
-		debounce((str) => {
+		debounce((str: string) => {
 			dispatch(setSearchValue(str));
 		}, 300),
 		[],
 	);
 
-	const onChangeInput = (event) => {
+	const onChangeInput = (event: any) => {
 		setValue(event.target.value);
 		updateSearchValue(event.target.value);
 	};
