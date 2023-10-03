@@ -10,24 +10,28 @@ import {
 	setCurrentPage,
 	setFilters,
 } from '../redux/slices/filterSlice';
-import { fetchPizzas, pizzaDataSelector } from '../redux/slices/pizzaSlice';
+import { fetchPizzas, pizzaDataSelector, typeSearchPizzaParams } from '../redux/slices/pizzaSlice';
 
 import Sort, { sortList } from '../components/Sort';
 import Category from '../components/Category';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
+import { useAppDispatch } from '../redux/store';
 const Home: React.FC = () => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
-	const isSearch = useRef(false);
-	const isMounted = useRef(false);
+	const dispatch = useAppDispatch();
+	const isSearch = useRef<boolean>(false);
+	const isMounted = useRef<boolean>(false);
 
 	// TODO useSelector - функция, чтобы вытащить state.  Берем из filter -> filterSlice.js -> состояние (categoryId)
 
 	const { items, status } = useSelector(pizzaDataSelector);
 	const { categoryId, sort, orderType, searchValue, currentPage } = useSelector(filterSelector);
 
+	const onChangeCategory = (index: number) => {
+		dispatch(setCategoryId(index));
+	};
 	const onChangePage = (page: number) => {
 		dispatch(setCurrentPage(page));
 	};
@@ -45,14 +49,10 @@ const Home: React.FC = () => {
 				search,
 				sortType,
 				orderType,
-				currentPage,
+				currentPage: String(currentPage),
 			}),
 		);
 		window.scrollTo(0, 0);
-	};
-
-	const onChangeCategory = (index: number) => {
-		dispatch(setCategoryId(index));
 	};
 
 	// Если изменили параметры и был 1 рендер то вшиваем строку в поиск из redux
@@ -66,18 +66,27 @@ const Home: React.FC = () => {
 			});
 			navigate(`?${queryString}`);
 		}
+		if (!window.location.search) {
+			dispatch(fetchPizzas({} as typeSearchPizzaParams));
+		}
 		isMounted.current = true;
 	}, [categoryId, sort.sortProperty, currentPage, orderType]);
 
 	// Если был первый рендер, то проверяем URL- параметры и сохраняем в redux
 	useEffect(() => {
 		if (window.location.search) {
-			const params = qs.parse(window.location.search.substring(1));
-			const sort = sortList.find((obj:any) => obj.sortProperty === params.sortProperty);
+			const params = qs.parse(
+				window.location.search.substring(1),
+			) as unknown as typeSearchPizzaParams;
+			const sort = sortList.find((obj: any) => obj.sortProperty === params.sortType);
+
 			dispatch(
 				setFilters({
-					...params,
-					sort,
+					searchValue: params.search,
+					categoryId: Number(params.category),
+					currentPage: Number(params.currentPage),
+					sort: sort || sortList[0],
+					orderType:params.orderType,
 				}),
 			);
 			isSearch.current = true;
@@ -93,7 +102,7 @@ const Home: React.FC = () => {
 		isSearch.current = false;
 	}, [categoryId, sort.sortProperty, orderType, searchValue, currentPage]);
 
-	const pizzas = items.map((obj:any) => <PizzaBlock key={obj.id} {...obj} />);
+	const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
 	const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
 	return (

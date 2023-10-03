@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addItem, deleteItem, removeItem } from '../../redux/slices/cartSlice';
+import { addItem, reduceItem, removeItem, typeCartItem } from '../../redux/slices/cartSlice';
 
 type TypeCartItemProps = {
 	id: string;
@@ -26,11 +26,11 @@ const CartItem: React.FC<TypeCartItemProps> = ({
 		dispatch(
 			addItem({
 				id,
-			}),
+			} as typeCartItem),
 		);
 	};
-	const onClickDelete = () => {
-		count > 1 ? dispatch(deleteItem(id)) : dispatch(removeItem(id));
+	const onClickReduce = () => {
+		count > 1 ? dispatch(reduceItem(id)) : dispatch(removeItem(id));
 	};
 	const onClickRemove = () => {
 		dispatch(removeItem(id));
@@ -69,7 +69,7 @@ const CartItem: React.FC<TypeCartItemProps> = ({
 			</div>
 			<div className='cart__item-count'>
 				<button
-					onClick={onClickDelete}
+					onClick={onClickReduce}
 					className='button button--outline button--circle cart__item-count-minus'
 				>
 					<svg

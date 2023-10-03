@@ -1,6 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
-const initialState = {
+export type typeCartItem = {
+	id: string;
+	title: string;
+	price: number;
+	imageUrl: string;
+	type: string;
+	size: number;
+	count: number;
+};
+interface CartSliceState {
+	totalPrice: number;
+	items: typeCartItem[];
+	totalCount: number;
+}
+
+const initialState: CartSliceState = {
 	totalPrice: 0,
 	items: [],
 	totalCount: 0,
@@ -12,7 +28,7 @@ export const cartSlice = createSlice({
 	reducers: {
 		// Находим объект в массиве, если объекта нет, то добавляем и задаем ему счетчик count, если объект есть, то увеличиваем личный и общий счетчик на 1
 		// todo Сделать добавление пиццы по выбраному размеру и типу( тонкое, традиционное)
-		addItem(state, action) {
+		addItem(state, action: PayloadAction<typeCartItem>) {
 			const findItem = state.items.find((obj) => obj.id === action.payload.id);
 
 			findItem
@@ -25,17 +41,21 @@ export const cartSlice = createSlice({
 			}, 0);
 		},
 
-		deleteItem(state, action) {
+		reduceItem(state, action: PayloadAction<string>) {
 			const findItem = state.items.find((obj) => obj.id === action.payload);
-			findItem.count > 1 && findItem.count-- && state.totalCount--;
-			state.totalPrice -= findItem.price;
+			if (findItem) {
+				findItem.count > 1 && findItem.count-- && state.totalCount--;
+				state.totalPrice -= findItem.price;
+			}
 		},
 
-		removeItem(state, action) {
+		removeItem(state, action: PayloadAction<string>) {
 			const findItem = state.items.find((obj) => obj.id === action.payload);
-			state.totalPrice -= findItem.price * findItem.count;
-			state.totalCount -= findItem.count;
-			state.items = state.items.filter((obj) => obj.id !== action.payload);
+			if (findItem) {
+				state.totalPrice -= findItem.price * findItem.count;
+				state.totalCount -= findItem.count;
+				state.items = state.items.filter((obj) => obj.id !== action.payload);
+			}
 		},
 		clearItems(state) {
 			state.items = [];
@@ -45,9 +65,10 @@ export const cartSlice = createSlice({
 	},
 });
 
-export const cartSelector = (state) => state.cart;
-export const cartItemByIdSelector =(id)=> (state) => state.cart.items.find((obj) => obj.id === id);
+export const cartSelector = (state: RootState) => state.cart;
+export const cartItemByIdSelector = (id: string) => (state: RootState) =>
+	state.cart.items.find((obj) => obj.id === id);
 
-export const { addItem, deleteItem, removeItem, clearItems } = cartSlice.actions;
+export const { addItem, reduceItem, removeItem, clearItems } = cartSlice.actions;
 
 export default cartSlice.reducer;

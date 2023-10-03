@@ -5,7 +5,7 @@ import { setSearchValue } from '../../redux/slices/filterSlice';
 
 import styles from './Search.module.scss';
 
-const Search:React.FC = () => {
+const Search: React.FC = () => {
 	const dispatch = useDispatch();
 
 	// Этот локальный state отвечает за быстрое отображение данных в input
@@ -14,6 +14,7 @@ const Search:React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const onClickClear = () => {
+		 
 		dispatch(setSearchValue(''));
 		setValue('');
 		inputRef.current?.focus();
@@ -27,14 +28,14 @@ const Search:React.FC = () => {
 		[],
 	);
 
-	const onChangeInput = (event: any) => {
+	const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value);
 		updateSearchValue(event.target.value);
 	};
 
 	return (
 		<div className={styles.root}>
-			<svg
+			<svg 
 				className={styles.icon}
 				viewBox='0 0 512 512'
 				width='512'
