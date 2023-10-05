@@ -1,15 +1,25 @@
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Search from '../Search';
-import { cartSelector } from '../../redux/slices/cartSlice';
+import { cartSelector } from '../../redux/cart/selectors';
 
 type TypeHeaderProps = {
 	totalPrice: number;
 	totalCount: number;
 };
 const Header: React.FC<TypeHeaderProps> = () => {
-	const { totalPrice, totalCount } = useSelector(cartSelector);
+	const { items, totalPrice, totalCount } = useSelector(cartSelector);
 	const location = useLocation();
+	const isMounted = useRef(false);
+
+	useEffect(() => {
+		if (isMounted.current) {
+			const json = JSON.stringify(items);
+			localStorage.setItem('cart', json);
+		}
+		isMounted.current = true;
+	}, [items, totalCount, totalPrice]);
 
 	return (
 		<div className='header'>

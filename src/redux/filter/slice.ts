@@ -1,22 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { IFilterSliceState, SortPropertyEnum, typeSort } from './types';
 
-export enum  SortPropertyEnum {
-	RATING = 'rating',
-	TITLE = 'title',
-	PRICE = 'price',
-}
-export type typeSort = {
-	name: string;
-	sortProperty: SortPropertyEnum;
-};
-export interface IFilterSliceState {
-	categoryId: number;
-	searchValue: string;
-	currentPage: number;
-	orderType: string;
-	sort: typeSort;
-}
 const initialState: IFilterSliceState = {
 	categoryId: 0,
 	sort: {
@@ -49,15 +33,22 @@ export const filterSlice = createSlice({
 		},
 
 		setFilters(state, action: PayloadAction<IFilterSliceState>) {
-			state.orderType = action.payload.orderType;
-			state.sort = action.payload.sort;
-			state.currentPage = Number(action.payload.currentPage);
-			state.categoryId = Number(action.payload.categoryId);
+			if (Object.keys(action.payload).length) {
+				state.currentPage = Number(action.payload.currentPage);
+				state.categoryId = Number(action.payload.categoryId);
+				state.sort = action.payload.sort;
+				state.orderType = action.payload.orderType;
+			} else {
+				state.currentPage = 1;
+				state.categoryId = 0;
+				state.sort = {
+					name: 'популярности',
+					sortProperty: SortPropertyEnum.RATING,
+				};
+			}
 		},
 	},
 });
-
-export const filterSelector = (state: RootState) => state.filter;
 
 // Action creators are generated for each case reducer function
 export const { setCategoryId, setSort, setSearchValue, setCurrentPage, setOrderType, setFilters } =

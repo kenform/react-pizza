@@ -28,12 +28,14 @@ const FullPizza: React.FC = () => {
 	// if (!pizza) {
 	// 	return <>Загрузка...</>;
 	// }
-	
+
 	return (
 		<div className='container'>
-			<img src={pizza.imageUrl} alt='Full Pizza' />
-			<h2>{pizza.title}</h2>
-			<h4>{pizza.price} ₽</h4>
+			<div className='full__pizza'>
+				<img src={pizza.imageUrl} alt='Full Pizza' />
+				<h2>{pizza.title}</h2>
+				<h4>{pizza.price} ₽</h4>
+			</div>
 		</div>
 	);
 };
