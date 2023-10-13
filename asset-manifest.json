@@ -1,13 +1,21 @@
 {
   "files": {
-    "main.css": "/react-pizza/static/css/main.10ab05ed.css",
-    "main.js": "/react-pizza/static/js/main.3b088322.js",
+    "main.css": "/react-pizza/static/css/main.f09049f5.css",
+    "main.js": "/react-pizza/static/js/main.beba763d.js",
+    "static/js/89.78f3528e.chunk.js": "/react-pizza/static/js/89.78f3528e.chunk.js",
+    "static/js/335.d84a30c2.chunk.js": "/react-pizza/static/js/335.d84a30c2.chunk.js",
+    "static/css/651.1f2c8bc1.chunk.css": "/react-pizza/static/css/651.1f2c8bc1.chunk.css",
+    "static/js/651.dfab0209.chunk.js": "/react-pizza/static/js/651.dfab0209.chunk.js",
     "index.html": "/react-pizza/index.html",
-    "main.10ab05ed.css.map": "/react-pizza/static/css/main.10ab05ed.css.map",
-    "main.3b088322.js.map": "/react-pizza/static/js/main.3b088322.js.map"
+    "main.f09049f5.css.map": "/react-pizza/static/css/main.f09049f5.css.map",
+    "main.beba763d.js.map": "/react-pizza/static/js/main.beba763d.js.map",
+    "89.78f3528e.chunk.js.map": "/react-pizza/static/js/89.78f3528e.chunk.js.map",
+    "335.d84a30c2.chunk.js.map": "/react-pizza/static/js/335.d84a30c2.chunk.js.map",
+    "651.1f2c8bc1.chunk.css.map": "/react-pizza/static/css/651.1f2c8bc1.chunk.css.map",
+    "651.dfab0209.chunk.js.map": "/react-pizza/static/js/651.dfab0209.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.10ab05ed.css",
-    "static/js/main.3b088322.js"
+    "static/css/main.f09049f5.css",
+    "static/js/main.beba763d.js"
   ]
 }
