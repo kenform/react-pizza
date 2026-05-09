@@ -9,7 +9,7 @@ const API_URL = 'https://6501b4e2736d26322f5c28ca.mockapi.io/items';
 
 const getFallbackPizzas = (params: Partial<typeSearchPizzaParams>): typePizza[] => {
   const currentPage = Number(params.currentPage || 1);
-  const limit = 4;
+  const limit = 10;
   const categoryId = Number(String(params.category || '').replace('category=', ''));
   const searchValue = String(params.search || '').replace('&search=', '').trim().toLowerCase();
   const sortType = params.sortType || 'rating';
@@ -48,7 +48,7 @@ export const fetchPizzas = createAsyncThunk<typePizza[], typeSearchPizzaParams>(
 
     try {
       const { data } = await axios.get<typePizza[]>(
-        `${API_URL}?page=${currentPage}&limit=4&${category}&sortBy=${sortType}&order=${orderType}${search}`,
+        `${API_URL}?page=${currentPage}&limit=10&${category}&sortBy=${sortType}&order=${orderType}${search}`,
       );
 
       if (Array.isArray(data) && data.length > 0) {

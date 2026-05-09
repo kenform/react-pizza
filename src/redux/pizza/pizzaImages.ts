@@ -1,6 +1,6 @@
 export const getPizzaImageUrl = (id?: string | number): string => {
 	const numericId = Number(id);
-	const safeId = Number.isFinite(numericId) && numericId > 0 ? ((numericId - 1) % 8) + 1 : 1;
+	const safeId = Number.isFinite(numericId) && numericId > 0 ? ((numericId - 1) % 10) + 1 : 1;
 
 	return `/img/pizzas/pizza-${safeId}.svg`;
 };
