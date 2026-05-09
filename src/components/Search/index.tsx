@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
 import { setSearchValue } from '../../redux/filter/slice';
@@ -7,25 +7,28 @@ import styles from './Search.module.scss';
 
 const Search: React.FC = () => {
 	const dispatch = useDispatch();
-
-	// Этот локальный state отвечает за быстрое отображение данных в input
 	const [value, setValue] = useState('');
-
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	const updateSearchValue = useMemo(
+		() =>
+			debounce((str: string) => {
+				dispatch(setSearchValue(str));
+			}, 300),
+		[dispatch],
+	);
+
+	useEffect(() => {
+		return () => {
+			updateSearchValue.cancel();
+		};
+	}, [updateSearchValue]);
 
 	const onClickClear = () => {
 		dispatch(setSearchValue(''));
 		setValue('');
 		inputRef.current?.focus();
 	};
-
-	// todo useCallback получает ссылку на функцию и возвращает функцию в переменную testDebounce. Функция не пересоздается
-	const updateSearchValue = useCallback(
-		debounce((str: string) => {
-			dispatch(setSearchValue(str));
-		}, 300),
-		[],
-	);
 
 	const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value);

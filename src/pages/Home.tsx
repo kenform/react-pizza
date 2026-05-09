@@ -32,13 +32,13 @@ const Home: React.FC = () => {
 
 	const onChangeCategory = useCallback((index: number) => {
 		dispatch(setCategoryId(index));
-	}, []);
+	}, [dispatch]);
 
 	const onChangePage = (page: number) => {
 		dispatch(setCurrentPage(page));
 	};
 
-	const getPizzas = async () => {
+	const getPizzas = useCallback(async () => {
 		const category = categoryId > 0 ? `category=${categoryId}` : '';
 		const search = searchValue ? `&search=${searchValue}` : '';
 		const sortType = sort.sortProperty;
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
 			}),
 		);
 		window.scrollTo(0, 0);
-	};
+	}, [categoryId, currentPage, dispatch, orderType, searchValue, sort.sortProperty]);
 
 	// Если изменили параметры и был 1 рендер то вшиваем строку в поиск из redux
 	useEffect(() => {
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
 			dispatch(fetchPizzas({} as typeSearchPizzaParams));
 		}
 		isMounted.current = true;
-	}, [categoryId, sort.sortProperty, currentPage, orderType]);
+	}, [categoryId, sort.sortProperty, currentPage, orderType, dispatch, navigate]);
 
 	// Если был первый рендер, то проверяем URL- параметры и сохраняем в redux
 	useEffect(() => {
@@ -91,7 +91,7 @@ const Home: React.FC = () => {
 			);
 			isSearch.current = true;
 		}
-	}, []);
+	}, [dispatch]);
 
 	// Если был первый рендер, то запрашиваем пиццы
 	useEffect(() => {
@@ -100,7 +100,7 @@ const Home: React.FC = () => {
 			getPizzas();
 		}
 		isSearch.current = false;
-	}, [categoryId, sort.sortProperty, orderType, searchValue, currentPage]);
+	}, [categoryId, sort.sortProperty, orderType, searchValue, currentPage, getPizzas]);
 
 	const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
 	const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
