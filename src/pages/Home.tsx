@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import qs from 'qs';
 
@@ -26,7 +26,6 @@ const Home: React.FC = () => {
 	const isSearch = useRef<boolean>(false);
 	const isMounted = useRef<boolean>(false);
 
-	// TODO useSelector - функция, чтобы вытащить state.  Берем из filter -> filterSlice.js -> состояние (categoryId)
 
 	const { items, status } = useSelector(pizzaDataSelector);
 	const { categoryId, sort, orderType, searchValue, currentPage } = useSelector(filterSelector);
@@ -45,8 +44,6 @@ const Home: React.FC = () => {
 		const sortType = sort.sortProperty;
 
 		dispatch(
-			//!FIXE THIS
-			// @ts-ignore
 			fetchPizzas({
 				category,
 				search,
