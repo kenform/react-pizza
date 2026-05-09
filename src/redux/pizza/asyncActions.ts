@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { typePizza, typeSearchPizzaParams } from './types';
 import { fallbackPizzas } from './fallbackPizzas';
+import { withLocalPizzaImage } from './pizzaImages';
 
 const API_URL = 'https://6501b4e2736d26322f5c28ca.mockapi.io/items';
 
@@ -51,13 +52,13 @@ export const fetchPizzas = createAsyncThunk<typePizza[], typeSearchPizzaParams>(
       );
 
       if (Array.isArray(data) && data.length > 0) {
-        return data;
+        return data.map(withLocalPizzaImage);
       }
 
-      return getFallbackPizzas(params);
+      return getFallbackPizzas(params).map(withLocalPizzaImage);
     } catch (error) {
       console.warn('MockAPI is unavailable, using local pizza fallback.');
-      return getFallbackPizzas(params);
+      return getFallbackPizzas(params).map(withLocalPizzaImage);
     }
   },
 );

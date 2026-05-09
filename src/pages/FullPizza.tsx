@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { fallbackPizzas } from '../redux/pizza/fallbackPizzas';
+import { withLocalPizzaImage } from '../redux/pizza/pizzaImages';
 
 const API_URL = 'https://6501b4e2736d26322f5c28ca.mockapi.io/items';
 
@@ -21,10 +22,10 @@ const FullPizza: React.FC = () => {
 
       try {
         const { data } = await axios.get(`${API_URL}/${id}`);
-        setPizza(data || fallbackPizza);
+        setPizza(withLocalPizzaImage(data || fallbackPizza));
       } catch (error) {
         console.warn('Pizza details API is unavailable, using local fallback.');
-        setPizza(fallbackPizza);
+        setPizza(withLocalPizzaImage(fallbackPizza));
       }
     }
 

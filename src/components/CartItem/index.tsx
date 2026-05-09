@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addItem, reduceItem, removeItem } from '../../redux/cart/slice';
 import { typeCartItem } from '../../redux/cart/types';
+import { getPizzaImageUrl } from '../../redux/pizza/pizzaImages';
 
 type TypeCartItemProps = {
 	id: string;
@@ -40,7 +41,7 @@ const CartItem: React.FC<TypeCartItemProps> = ({
 	return (
 		<div className='cart__item'>
 			<div className='cart__item-img'>
-				<img className='pizza-block__image' src={imageUrl} alt='Pizza' />
+				<img className='pizza-block__image' src={imageUrl} alt='Pizza' onError={(event) => { event.currentTarget.src = getPizzaImageUrl(id); }} />
 				<div onClick={onClickRemove} className='cart__item-remove mobile'>
 					<div className='button button--outline button--circle'>
 						<svg

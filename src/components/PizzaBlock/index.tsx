@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../redux/cart/slice';
 import { cartItemByIdSelector } from '../../redux/cart/selectors';
 import { typeCartItem } from '../../redux/cart/types';
+import { getPizzaImageUrl } from '../../redux/pizza/pizzaImages';
 type TypePizzaBlockProps = {
 	id: string;
 	title: string;
@@ -45,7 +46,7 @@ const PizzaBlock: React.FC<TypePizzaBlockProps> = ({
 	return (
 		<div className='pizza-block'>
 			<Link to={`/pizza/${id}`}>
-				<img className='pizza-block__image' src={imageUrl} alt='Pizza' />
+				<img className='pizza-block__image' src={imageUrl} alt='Pizza' onError={(event) => { event.currentTarget.src = getPizzaImageUrl(id); }} />
 			</Link>
 
 			<h4 className='pizza-block__title'>{title}</h4>
