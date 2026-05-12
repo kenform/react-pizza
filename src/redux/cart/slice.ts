@@ -11,7 +11,7 @@ export const cartSlice = createSlice({
 	initialState,
 	reducers: {
 		// Находим объект в массиве, если объекта нет, то добавляем и задаем ему счетчик count, если объект есть, то увеличиваем личный и общий счетчик на 1
-		// todo Сделать добавление пиццы по выбраному размеру и типу( тонкое, традиционное)
+		// Cart items are grouped by selected pizza options.
 		addItem(state, action: PayloadAction<typeCartItem>) {
 			const findItem = state.items.find((obj) => obj.id === action.payload.id);
 
